@@ -10,7 +10,7 @@ int cnt(int m , int n, int r, int c, int curr_state, int prev_state){
     if(r==m){
         return cnt(m, n, 0, c+1, 0, curr_state);
     }
-    if(r==0 && dp[c][prev_state]!=-1){
+    if( dp[c][prev_state]!=-1){
         return dp[c][prev_state];
     }
 
