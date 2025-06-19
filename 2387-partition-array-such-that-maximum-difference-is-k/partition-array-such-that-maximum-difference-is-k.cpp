@@ -1,26 +1,28 @@
+// the C++ version shown in the film
 class Solution {
 public:
-    int partitionArray(vector<int>& arr, int k) {
+    static int partitionArray(vector<int>& nums, int k) {
+        if (nums.size() == 1)
+            return 1; // edge case
 
-sort(arr.begin(),arr.end());
-int i=0;
-int n=arr.size();
- int j=0;
-  int cnt=0;
-  while(i< n && j<n){
-    while(j< n && arr[j]-arr[i]<=k){
-        j++;
-        cout<<j<< " "<<i<<endl;
-    }
-    i=j;
-    j++;
-    cnt++;
-  }
+        int freq[100001] = {0}, xMax = -1;
+        for (int x : nums) {
+            freq[x]++;
+            xMax = max(xMax, x);
+        }
 
-  if(i<n){cnt++;}
+        int partitions = 0;
+        for (int x = 0; x <= xMax;) { // start from 0
+            // skip x when freq[x]=0
+            while (x <= xMax && freq[x] == 0)
+                x++;
+            if (x > xMax)
+                break;
 
-  return cnt;
-
-        
+            int end = x + k; // subsequence max
+            partitions++;
+            x = end + 1; // next subsequence min
+        }
+        return partitions;
     }
 };
