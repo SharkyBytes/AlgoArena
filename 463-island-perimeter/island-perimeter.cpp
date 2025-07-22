@@ -3,27 +3,25 @@ public:
     int islandPerimeter(vector<vector<int>>& arr) {
 
         int n=arr.size();
-        int m= arr[0].size();
-        vector<int> dx={-1, 0 , 1, 0};
-        vector<int> dy= {0, -1, 0, 1};
+        int m=arr[0].size();
         int cnt=0;
-        for(int i=0; i< n ; i++){
-            for(int j=0; j<m ; j++){
+        for(int i=0; i<n ; i++){
+            for(int j=0; j< m ; j++){
+                
                 if(arr[i][j]==1){
-                for(int p=0; p<4; p++){
-                    
-                    int x= dx[p]+i;
-                    int y= dy[p]+j;
-                    if(x<0 || y<0 | x>=n|| y>=m || arr[x][y]==0){
-                        cnt++;
-                    }
-                    
+                    cnt+=4;
+                
+                if(i>0 && arr[i-1][j]==1){
+                    cnt-=2;
 
+                }
+
+                if(j>0 && arr[i][j-1]==1){
+                    cnt-=2;
                 }
                 }
             }
         }
-
         return cnt;
         
     }
