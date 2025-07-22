@@ -46,8 +46,8 @@ class Solution {
 public:
     int makeConnected(int n, vector<vector<int>>& arr) {
 
-          if(arr.size() < n-1)
-            return -1; // Not enough cables
+        //   if(arr.size() < n-1)
+        //     return -1; // Not enough cables
 
         
 
