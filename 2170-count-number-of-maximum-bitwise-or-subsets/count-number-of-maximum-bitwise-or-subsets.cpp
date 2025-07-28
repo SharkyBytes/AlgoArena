@@ -1,7 +1,7 @@
 class Solution {
 public:
-        int maxi=INT_MIN;
-        int cnt=0;
+int maxi=INT_MIN;
+int cnt=0;
 void recur(int i, vector<int> & arr, int val){
     if(i==arr.size()){
         maxi=max(val, maxi);
@@ -12,29 +12,31 @@ void recur(int i, vector<int> & arr, int val){
     recur(i+1, arr, val);
 }
 
-void orrecur(int i, vector<int> & arr, int val, int maxi){
+int orrecur(int i, vector<int> & arr, int val, int maxi,unordered_map<int, unordered_map<int, int>> &dp){
     if(i==arr.size() ){
         if(val==maxi){
-            cnt++;
+            return 1;
         }      
-        return ;
+        return 0;
     }
+   if (dp[i].count(val)) return dp[i][val];
 
+   int x= orrecur(i+1, arr, val | arr[i], maxi, dp);
+   int y= orrecur(i+1, arr, val, maxi, dp);
 
-    orrecur(i+1, arr, val | arr[i], maxi);
-    orrecur(i+1, arr, val, maxi);
-
+    return dp[i][val]=x+y;
 }
 
 
-    int countMaxOrSubsets(vector<int>& arr) {
+int countMaxOrSubsets(vector<int>& arr) {
 
         int n=arr.size();
         recur(0, arr, 0);
-        orrecur(0, arr, 0, maxi);
+        unordered_map<int, unordered_map<int, int>> dp;
+        // orrecur(0, arr, 0, maxi);
 
-        cout<<maxi<<endl;
-        return cnt;
+        // cout<<maxi<<endl;
+        return orrecur(0,arr,0 , maxi, dp);
         
     }
 };
