@@ -29,6 +29,8 @@ int orrecur(int i, vector<int> & arr, int val, int maxi,unordered_map<int, unord
 
 
 int countMaxOrSubsets(vector<int>& arr) {
+      ios_base::sync_with_stdio(false);
+        cin.tie(NULL);
 
         int n=arr.size();
         recur(0, arr, 0);
