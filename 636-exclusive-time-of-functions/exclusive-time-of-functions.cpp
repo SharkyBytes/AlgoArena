@@ -1,86 +1,46 @@
-class Solution {
-public:
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <sstream>
+#include <cassert>
 
-struct Stack{
-    int id,  start,  ch;
+using namespace std;
+
+struct Log {
+    int id;
+    string status;
+    int timestamp;
 };
 
-vector<int>  process(string & s){
-    int x=0;
-    int i=0;
-    int num=0;
-    bool st=0;
-    while(i< s.length()){
-        if(s[i]==':'){
-            i++;
-            x=num;     
-            break;       
-        }
-        num*=10;
-        num+=s[i]-'0';
-        i++;
-    }
-
-    if(s[i]=='s'){
-        st=true;
-    }   
-    num=0;
-     while(i< s.length()){
-        if(s[i]==':' || (s[i]<'0' || s[i]>'9')){
-           i++;      
-           continue;
-        }
-        num*=10;
-        num+=s[i]-'0';
-        i++;
-    }
-
-    int interval=num;
-cout<<x<<" "<<st<<" "<<interval<<endl;
-
-    return {x, st, interval };
-
-}
+class Solution {
+public:
     vector<int> exclusiveTime(int n, vector<string>& logs) {
+        vector<int> times(n, 0);
+        stack<Log> st;
+        for(string log: logs) {
+            stringstream ss(log);
+            string temp, temp2, temp3;
+            getline(ss, temp, ':');
+            getline(ss, temp2, ':');
+            getline(ss, temp3, ':');
 
-        stack<Stack> st;
+            Log item = {stoi(temp), temp2, stoi(temp3)};
+            if(item.status == "start") {
+                st.push(item);
+            } else {
+                assert(st.top().id == item.id);
 
-        int m= logs.size();
-        map<int,int> mp;
-        int ch=0;
-        for(int i=0; i< m ; i++){
-
-            string p=logs[i];
-            vector<int> info=process(p);
-            if(info[1]==1){
-                st.push({info[0], info[2], 0});
-            }  
-
-            else{
-                auto it = st.top();
-                int num= info[2]-it.start+1;
-                int x=num;
-                x-=it.ch;
-                cout<<x<<endl;
-                mp[it.id]+=x;
+                int time_added = item.timestamp - st.top().timestamp + 1;
+                times[item.id] += time_added;
                 st.pop();
-                if(!st.empty()){
-                    st.top().ch+=num;
+
+                if(!st.empty()) {
+                    assert(st.top().status == "start");
+                    times[st.top().id] -= time_added;
                 }
-            }          
-
+            }
         }
 
-        vector<int> ans(n,0);
-
-        for(auto it : mp){
-            int idd=it.first;
-            int time= it.second;
-            ans[idd]=time;
-        }
-
-        return ans;
-
-        
+        return times;
     }
 };
