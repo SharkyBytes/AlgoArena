@@ -1,7 +1,7 @@
 class Solution {
 public:
 
-    int count(int mid, vector<int> & nums, int limit, int n){
+    long long count(int mid, vector<int> & nums, int limit, int n){
         long long cnt=0;
         for(int i=0; i< n ; i++){
             if(nums[i]<=mid){
@@ -20,12 +20,12 @@ public:
 
         int s=1;
         int e= nums[n-1];
-        int ans=e;
-        while(s<e){
+        int ans=INT_MAX;
+        while(s<=e){
             int mid= s+(e-s)/2;
             if(count(mid, nums, maxOperations,n )<=maxOperations){
                 ans=mid;
-                e=mid;
+                e=mid-1;
             }
             else{
                s=mid+1;
