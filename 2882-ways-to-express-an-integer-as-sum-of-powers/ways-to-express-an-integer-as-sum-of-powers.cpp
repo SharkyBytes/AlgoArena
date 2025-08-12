@@ -32,14 +32,15 @@ int recur(int ind, vector<vector<int>> & dp, vector<int> &temp , int n, int x, i
     }
 
     vector<int> dp(n+1, 0);
-    dp[0] = 1;
-
-    for (int val : nums) {
-        for (int sum = n; sum >= val; sum--) {
-            dp[sum] = (dp[sum] + dp[sum - val]) % 1000000007;
-        }
+    int sz=nums.size();
+   dp[0]=1;
+   for(int i=0; i<sz ; i++){
+    int x= nums[i];
+    for(int j=n; j>=x; j--){
+        dp[j]= (dp[j]+ dp[j-x])%mod;
     }
-    return dp[n];
+   }
+   return dp[n];
 }
 
 };
