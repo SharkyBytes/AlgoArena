@@ -1,47 +1,26 @@
 class Solution {
 public:
-   bool searchMatrix(vector<vector<int>>& mat, int target) {
-    int N = mat.size(), M = mat[0].size();
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
 
-    // Start from top-right corner
-    int row = 0, col = M - 1;
+        int n= matrix.size();
+        int m= matrix[0].size();
 
-    while (row < N && col >= 0) {
-        if (mat[row][col] == target) return true;
-
-        if (mat[row][col] < target) {
-            // Binary search in the column to find the first row
-            // where value >= target
-            int low = row + 1, high = N - 1, lb = -1;
-            while (low <= high) {
-                int mid = (low + high) / 2;
-                if (mat[mid][col] >= target) {
-                    lb = mid;
-                    high = mid - 1;
-                } else {
-                    low = mid + 1;
-                }
+        int s=0;
+        int e= m*n-1;
+        while(s<=e){
+            int mid = s+(e-s)/2;
+            int x= mid/m;
+            int y= mid%m;
+            if(matrix[x][y]==target){
+                return true;
             }
-
-            if (lb == -1) return false; // No possible row found
-            // Binary search in row lb
-            int l = 0, r = M - 1;
-            while (l <= r) {
-                int m = (l + r) / 2;
-                if (mat[lb][m] == target)
-                    return true;
-                else if (mat[lb][m] < target)
-                    l = m + 1;
-                else
-                    r = m - 1;
+            else if(matrix[x][y]<target){
+                s=mid+1;
             }
-            return false; // Not found in that row
-        } else {
-            col--; // Move left
+            else{
+                e=mid-1;
+            }
         }
+        return false;
     }
-
-    return false; // Exhausted all possibilities
-}
-
 };
