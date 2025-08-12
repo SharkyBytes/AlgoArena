@@ -23,21 +23,23 @@ int recur(int ind, vector<vector<int>> & dp, vector<int> &temp , int n, int x, i
 }
 
 
-    int numberOfWays(int n, int x) {
-
-        vector<int> nums;
-        for(int i=1; i<=n ; i++){
-            int temp= pow(i,x);
-            if(temp>n)break;
-            nums.push_back(temp);
-        }
-
-        int sz=nums.size();
-
-       vector<vector<int>> dp(sz+1, vector<int> (n+1, -1));
-
-     return   recur(0, dp, nums, n, x, sz, 0);
-
-    
+   int numberOfWays(int n, int x) {
+    vector<int> nums;
+    for (int i = 1; i <= n; i++) {
+        int p = pow(i, x);
+        if (p > n) break;
+        nums.push_back(p);
     }
+
+    vector<int> dp(n+1, 0);
+    dp[0] = 1;
+
+    for (int val : nums) {
+        for (int sum = n; sum >= val; sum--) {
+            dp[sum] = (dp[sum] + dp[sum - val]) % 1000000007;
+        }
+    }
+    return dp[n];
+}
+
 };
