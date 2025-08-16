@@ -21,6 +21,15 @@ int recur(int ind, int n, vector<int> & nums, vector<int> & dp){
         int n=nums.size();
 
         vector<int> dp(n, -1);
-        return recur(0, n, nums, dp);
+        // return recur(0, n, nums, dp);
+
+        dp[0]=nums[0];
+        for(int i=1; i< n ; i++){
+            int pick=nums[i];
+            if(i>1)pick+=dp[i-2];
+            dp[i]=max(dp[i-1], pick);
+        }
+
+        return dp[n-1];
     }
 };
