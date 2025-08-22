@@ -1,43 +1,31 @@
 class Solution {
 public:
-        vector<vector<int>> dp;
-
-int recur(int i , vector<int> & prices, int state, int n){
-    if(i>=n)return 0;
-    int ans;
-    if(dp[i][state]!=-1)return dp[i][state];
+vector<vector<int>> dp;
+int recur(int ind, vector<int> & arr, int state, int n){
+    if(ind>=n)return 0;
+    if(dp[ind][state]!=-1)return dp[ind][state];
+    
     if(state==0){
-        int buy= -prices[i]+ recur(i+1, prices, 1, n);
-        int notbuy= recur(i+1, prices, 0, n);
-        ans=max(buy, notbuy);
+        int buy=-arr[ind]+ recur(ind+1, arr, 1, n);
+        int notbuy= recur(ind +1, arr, 0 , n);
+
+        return dp[ind][state]= max(buy, notbuy);
     }
-    else if(state==1){
-        int hold= recur(i+1, prices,1, n);
-        int sell= prices[i]+ recur(i+2, prices, 0, n);
-        ans=max(sell, hold);
+
+    else{
+        int sell= +arr[ind]+recur(ind+2, arr, 0, n);
+        int notsell= recur(ind +1, arr, 1, n);
+
+        return dp[ind][state]= max(sell, notsell);
     }
-    return dp[i][state]= ans;
+
+    return 0;
+
 }
     int maxProfit(vector<int>& prices) {
-
         int n=prices.size();
-        // dp.assign(n, vector<int> (2, -1));
-        // return recur(0, prices, 0, n);
-        dp.assign(n, vector<int> (2, 0));
+        dp.assign(n, vector<int> (2, -1));
 
-        dp[0][0]=-prices[0];
-        for(int i=1;i<n ; i++){
-            //state==0
-            if(i == 1)
-                dp[i][0] = max(dp[i-1][0], -prices[i]); // can't use i-2
-            else
-                dp[i][0] = max(dp[i-1][0], dp[i-2][1] - prices[i]);
-            //state==1
-
-            dp[i][1]=max(dp[i-1][1], dp[i-1][0]+prices[i]);
-        }
-
-        return dp[n-1][1];
-        
+        return recur(0, prices, 0, n);
     }
 };
