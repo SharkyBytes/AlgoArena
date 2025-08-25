@@ -1,29 +1,22 @@
 class Solution {
 public:
-    vector<vector<int>> merge(vector<vector<int>>& arr) {
-map<int,int> mp;
-        sort(arr.begin(), arr.end());
-        for(auto it :arr){
-            mp[it[0]]++;
-            mp[it[1]]--;
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
 
-        }
-        int cnt=0;
+        int n=intervals.size();
+        sort(intervals.begin(), intervals.end());
         vector<vector<int>> ans;
-        // ans.push_back({arr[0][0], arr[0][1]});
-        int st=0;
-
-        for(auto& [time, val] : mp){
-            if(cnt==0){
-                st=time;
-            }
-            cnt+=val;
-            if(cnt==0){
-                ans.push_back({st,time});
-            }
+        ans.push_back({intervals[0][0], intervals[0][1]});
+        for(int i=1; i< n ; i++){
+            vector<int> p=ans.back();
+            if(p[1]>=intervals[i][0]){
+                ans.back()[1]=max(ans.back()[1], intervals[i][1]);
+            } 
+            else{
+                ans.push_back({intervals[i][0], intervals[i][1]});
+            }         
 
         }
-return ans;
+        return ans;
         
     }
 };
