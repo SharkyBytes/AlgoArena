@@ -2,50 +2,51 @@ class Solution {
 public:
     string minWindow(string s, string t) {
 
-
-int n=s.length();
-
         map<char,int> mp;
-        for(auto it : t){
+        for(auto it :t){
             mp[it]++;
-
         }
+        int req=mp.size();
+        int n=s.length();
 
-        int sz=mp.size();
         map<char,int> window;
-        int formed=0;
-        int start=0;
-        int mini=INT_MAX;
-
         int l=0;
         int r=0;
-        while(r<n){
-            char ch= s[r];
-            window[ch]++;
+        int len=INT_MAX;
+        int start=0;
+        int cnt=0;
 
-            if(mp.count(ch) && window[ch]==mp[ch]){
-                formed++;
+        while(r<n){
+            if(mp.find(s[r])!=mp.end()){
+                window[s[r]]++;
+                if(mp[s[r]]==window[s[r]])cnt++;
             }
-            while(l<=r && formed==sz){
-                if(r-l+1<mini){
-                    mini=r-l+1;
+           
+
+            while(l<n && cnt==req){
+                if(r-l+1<len){
+                    len=r-l+1;
                     start=l;
                 }
-
                 char left= s[l];
-                window[left]--;
-                if(mp.count(left) && mp[left]> window[left]){
-                    formed--;
+                if(window.find(s[l])!=window.end()){
+                    window[s[l]]--;
+                    if(window[s[l]]< mp[s[l]]){
+                        cnt--;
+                    }
                 }
-                l++;
-            }
 
+                l++;
+                
+
+            }
             r++;
+            
 
         }
 
-        return mini==INT_MAX? "" : s.substr(start, mini);
 
+        return len==INT_MAX ? "" : s.substr(start, len);
 
         
     }
